@@ -7,6 +7,11 @@ class Bank {
 
     // Add methods here:
     // Example: createAccount(name, initialDeposit)
+    createAccount(name, initialDeposit){
+        const BankAccount = new Account(name, initialDeposit);
+        this.accounts.push(BankAccount);
+        return BankAccount;
+    }
 
 }
 
@@ -21,16 +26,46 @@ class Account {
     // Add methods here:
     // Example: deposit(amount) 
     // example data to be stored in transactionHistory { transactionType: 'Deposit', amount: 500 }
+    deposit(amount) {
+        this.balance += amount;
+        this.transactionHistory.push({ transactionType: 'Deposit', amount: amount });
+    }
 
     // Example: withdraw(amount)
     // example data to be stored in transactionHistory { transactionType: 'Withdrawal', amount: 200 }
+    withdraw(amount) {
+        if (this.balance >= amount) {
+            this.balance -= amount;
+        } else {
+            console.log("Withdrawal denied due to insufficient balance");
+        }
+        this.transactionHistory.push({ transactionType: 'Withdrawl', amount: amount });
+    }
+
 
     // Example: transfer(amount, recipientAccount)
     // example data to be stored in transactionHistory:
     // for account sending { transactionType: 'Transfer', amount: 300, to: recipientName }
     // for account recieving { transactionType: 'Received', amount: 300, from: senderName }
-    
+
+    transfer(amount, recipientAccount) {
+        if (this.balance >= amount) {
+            this.balance -= amount
+        } else {
+            console.log("Amount cannot be transferred due to insufficient funds");
+        }
+        this.transactionHistory.push({ transactionType: 'Transfer', amount: amount, to: recipientAccount.name });
+
+        recipientAccount.balance += amount
+        recipientAccount.transactionHistory.push({transactionType: 'Received', amount: amount, from: this.name});
+
+    }
+
     // Example: checkBalance()
+    checkBalance(){
+        //console.log(`AccountBalance: ${this.balance}`);
+        return this.balance;
+    }
 }
 
 //<-------------------------------DO NOT WRITE BELOW THIS LINE------------------------------>
@@ -58,11 +93,11 @@ function testBankOperations() {
     console.log('Jane\'s balance:', janeFinalBalance);
 
     // Return balances for testing
-    return { 
-        johnFinalBalance, 
-        janeFinalBalance, 
-        johnTransactionHistory: johnAccount.transactionHistory, 
-        janeTransactionHistory: janeAccount.transactionHistory 
+    return {
+        johnFinalBalance,
+        janeFinalBalance,
+        johnTransactionHistory: johnAccount.transactionHistory,
+        janeTransactionHistory: janeAccount.transactionHistory
     };
 }
 
