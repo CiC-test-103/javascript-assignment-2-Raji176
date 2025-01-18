@@ -39,7 +39,7 @@ class Account {
         } else {
             console.log("Withdrawal denied due to insufficient balance");
         }
-        this.transactionHistory.push({ transactionType: 'Withdrawl', amount: amount });
+        this.transactionHistory.push({ transactionType: 'Withdrawal', amount: amount });
     }
 
 
